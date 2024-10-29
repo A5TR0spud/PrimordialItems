@@ -11,10 +11,10 @@ namespace PrimordialItemsPlugin.ItemTiers
 {
     internal class PrimordialItemTier
     {
-        public static UnityEngine.Color color = new UnityEngine.Color(0.89f, 0.718f, 0.518f);
-        public static UnityEngine.Color darkColor = new UnityEngine.Color(0.714f, 0.522f, 0.349f);
-        public static UnityEngine.Color trailColor = new UnityEngine.Color(0.518f, 0.357f, 0.212f);
-        public static UnityEngine.Color trailDarkColor = new UnityEngine.Color(0.545f, 0.196f, 0.0f);
+        public static UnityEngine.Color color = new UnityEngine.Color(0.694f, 1.0f, 1.0f);
+        public static UnityEngine.Color darkColor = new UnityEngine.Color(0.518f, 0.8f, 0.796f);
+        public static UnityEngine.Color trailColor = new UnityEngine.Color(0.376f, 0.71f, 0.588f);
+        public static UnityEngine.Color trailDarkColor = new UnityEngine.Color(0.341f, 0.576f, 0.529f);
         public static ColorCatalog.ColorIndex primordialColorIndex;
         public static ColorCatalog.ColorIndex primordialDarkColorIndex;
         public static ItemTierDef PrimordialTier;
@@ -31,7 +31,7 @@ namespace PrimordialItemsPlugin.ItemTiers
             PrimordialTier.colorIndex = primordialColorIndex;
             PrimordialTier.darkColorIndex = primordialDarkColorIndex;
 
-            PrimordialTier.pickupRules = ItemTierDef.PickupRules.ConfirmAll;
+            PrimordialTier.pickupRules = ItemTierDef.PickupRules.ConfirmFirst;
             PrimordialTier.canRestack = false;
             PrimordialTier._tier = ItemTier.AssignedAtRuntime;
             PrimordialTier.name = "Primordial";

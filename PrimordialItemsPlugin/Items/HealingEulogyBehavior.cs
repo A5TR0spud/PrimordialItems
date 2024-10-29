@@ -17,12 +17,12 @@ namespace PrimordialItemsPlugin.Items
     internal class HealingEulogyBehavior : CharacterBody.ItemBehavior
     {
         private readonly static int regenDuration = 4;
-        private readonly static float totalHealPercent = 1f;
+        private readonly static float totalHealPercentInitial = 0.1f;
+        private readonly static float totalHealPercentStacking = 0.1f;
         private readonly static float healingInterval = 0.25f;
-        private readonly static float healthPerInterval = healingInterval * (totalHealPercent / regenDuration);
-        private readonly static float intervalsPerSecond = 1.0f / healingInterval;
         //static int cooldownDuration = 2;
-        private readonly static float regenerationHealthPerSecond = 0.1f;
+        private readonly static float slugInitial = 0.01f;
+        private readonly static float slugStacking = 0.01f;
 
         public static ItemDef init()
         {
@@ -55,8 +55,6 @@ namespace PrimordialItemsPlugin.Items
             //"RoR2/Base/Mystery/PickupMystery.prefab"
             itemDef.pickupModelPrefab = LegacyResourcesAPI.LoadAsync<GameObject>("Prefabs/PickupModels/PickupDomino").WaitForCompletion();
 
-            itemDef.AutoPopulateTokens();
-
             return itemDef;
         }
 
@@ -83,12 +81,11 @@ namespace PrimordialItemsPlugin.Items
                 {
                     self.AddItemBehavior<HealingEulogyBehavior>(self.inventory.GetItemCount(PrimordialItemCatalog.HealingEulogy));
                 }
-                if (self.inventory.GetItemCount(PrimordialItemCatalog.HealingEulogy) > 0)
+                /*if (self.inventory.GetItemCount(PrimordialItemCatalog.HealingEulogy) > 0)
                 {
-                    Utilities.ShatterItem(self, RoR2Content.Items.Medkit.itemIndex);
-                    Utilities.ShatterItem(self, RoR2Content.Items.HealWhileSafe.itemIndex);
-                    Utilities.ShatterItem(self, PrimordialItemCatalog.HealingEulogy.itemIndex, true);
-                }
+                    Utilities.GreatOldItem(self, RoR2Content.Items.Medkit.itemIndex, PrimordialItemCatalog.HealingEulogy.itemIndex);
+                    Utilities.GreatOldItem(self, RoR2Content.Items.HealWhileSafe.itemIndex, PrimordialItemCatalog.HealingEulogy.itemIndex);
+                }*/
                 orig(self);
             };
 
@@ -102,6 +99,11 @@ namespace PrimordialItemsPlugin.Items
                 if (buffType != PrimordialBuffCatalog.HealingEulogyRegen.buffIndex)
                     return;
 
+                Inventory inventory = self.inventory;
+
+                if (!(bool)inventory)
+                    return;
+
                 newCount = Mathf.Max(newCount, 0);
                 int instancesToHeal = oldCount - newCount;
                 HealthComponent healthComponent = self.healthComponent;
@@ -111,9 +113,16 @@ namespace PrimordialItemsPlugin.Items
                 if (instancesToHeal < 1)
                     return;
 
-                float toHeal = instancesToHeal + instancesToHeal * healthPerInterval * self.healthComponent.fullHealth;
+                float toHeal = instancesToHeal + (instancesToHeal * HealthPerInterval(inventory) * self.healthComponent.fullHealth);
                 self.healthComponent.Heal(toHeal, default(ProcChainMask), true);
             };
+        }
+
+        public static float HealthPerInterval(Inventory inventory)
+        {
+            int eulogyCount = inventory.GetItemCount(PrimordialItemCatalog.HealingEulogy) - 1;
+            float totalHealPercent = totalHealPercentInitial + (eulogyCount * totalHealPercentStacking);
+            return healingInterval * (totalHealPercent / regenDuration);
         }
 
         private void Awake()
@@ -137,7 +146,9 @@ namespace PrimordialItemsPlugin.Items
 
             if (base.body.outOfDanger)
             {
-                float toHeal = delta * base.body.healthComponent.fullHealth * regenerationHealthPerSecond;
+                int stack = base.body.inventory.GetItemCount(PrimordialItemCatalog.HealingEulogy) - 1;
+                float slugCoeff = slugInitial + (stack * slugStacking);
+                float toHeal = delta * base.body.healthComponent.fullHealth * slugCoeff;
                 base.body.healthComponent.Heal(toHeal, default(ProcChainMask), false);
             }
 
@@ -191,7 +202,7 @@ namespace PrimordialItemsPlugin.Items
             }
             if (!body.HasBuff(cooldown))
             {
-                int most = Mathf.CeilToInt(regenDuration * intervalsPerSecond);
+                int most = Mathf.CeilToInt(regenDuration * (1.0f / healingInterval));
                 for (int i = 0; i < most; i++)
                 {
                     body.AddTimedBuff(regen, regenDuration, most);

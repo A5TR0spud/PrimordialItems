@@ -8,23 +8,20 @@ namespace PrimordialItemsPlugin
 {
     internal class Utilities
     {
-        public static void ShatterItem(CharacterBody body, ItemIndex itemIndex, bool allButOne = false)
+        /*public static void GreatOldItem(CharacterBody body, ItemIndex victim, ItemIndex oPrimordialOne)
         {
             Inventory inventory = body.inventory;
             if (!(bool)inventory)
                 return;
-            int count = inventory.GetItemCount(itemIndex);
-            int threshold = allButOne ? 1 : 0;
+            int count = inventory.GetItemCount(victim);
 
-            ItemIndex shatteredIndex = PrimordialItemCatalog.ShatteredRemains.itemIndex;
-
-            if (count > threshold)
+            if (count > 0)
             {
-                int toConvert = count - threshold;
-                inventory.RemoveItem(itemIndex, toConvert);
-                inventory.GiveItem(shatteredIndex, toConvert);
-                CharacterMasterNotificationQueue.SendTransformNotification(body.master, itemIndex, shatteredIndex, CharacterMasterNotificationQueue.TransformationType.LunarSun);
+                int toConvert = count;
+                inventory.RemoveItem(victim, toConvert);
+                inventory.GiveItem(oPrimordialOne, toConvert);
+                CharacterMasterNotificationQueue.SendTransformNotification(body.master, victim, oPrimordialOne, CharacterMasterNotificationQueue.TransformationType.LunarSun);
             }
-        }
+        }*/
     }
 }

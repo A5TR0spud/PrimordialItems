@@ -7,12 +7,12 @@
   "en": {
     "PRIMORDIAL_HEALINGEULOGY_NAME": "Prayer to [Him]",
     "PRIMORDIAL_HEALINGEULOGY_PICKUP": "Rapidly heal after taking damage.",
-    "PRIMORDIAL_HEALINGEULOGY_DESC": "Taking damage applies the <style=cIsHealing>Mending</style> buff for 4 seconds, <style=cIsHealing>healing for full max health</style> over the duration. Taking damage during this time will immediately apply all queued healing but prevent <style=cIsHealing>Mending</style> from being applied for the remaining duration. While out of danger, <style=cIsHealing>heal for 10% max health</style> per second.\r\n\n<color=#E3B784>Converts all Medkits into Shattered Remains.\nConverts all Cautious Slugs into Shattered Remains.</color>",
+    "PRIMORDIAL_HEALINGEULOGY_DESC": "Taking damage applies the <style=cIsHealing>Mending</style> buff for 4 seconds, <style=cIsHealing>healing for 10%<style=cStack>(+10% per stack)</style> max health</style> over the duration. Taking damage during this time will immediately apply all queued healing but prevent <style=cIsHealing>Mending</style> from being applied for the remaining duration. While out of danger, <style=cIsHealing>heal for 1%<style=cStack>(+1% per stack)</style> max health</style> per second.\r\n\n<color=#E3B784>Converts all Medkits.\nConverts all Cautious Slugs.</color>",
     "PRIMORDIAL_HEALINGEULOGY_LORE": ":O",
 
     "PRIMORDIAL_SHATTEREDREMAINS_NAME": "Shattered Remains",
     "PRIMORDIAL_SHATTEREDREMAINS_PICKUP": "A relic of what has been lost.",
     "PRIMORDIAL_SHATTEREDREMAINS_DESC": "A relic of what has been lost.",
-    "PRIMORDIAL_SHATTEREDREMAINS_LORE": "[He] saw creatures for the beings they were, but [his brother] was blinded by jealousy."
+    "PRIMORDIAL_SHATTEREDREMAINS_LORE": "unused [He] saw creatures for the beings they were, but [his brother] was blinded by jealousy."
   }
 }
