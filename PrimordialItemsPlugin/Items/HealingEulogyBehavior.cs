@@ -11,6 +11,7 @@ using UnityEngine.Networking;
 using RoR2.Projectile;
 using PrimordialItemsPlugin.ItemTiers;
 using RoR2.UI.LogBook;
+using RoR2.ExpansionManagement;
 
 namespace PrimordialItemsPlugin.Items
 {
@@ -40,12 +41,10 @@ namespace PrimordialItemsPlugin.Items
                 ItemTag.WorldUnique
             ];
 
-            /*itemDef.tier = ItemTier.Boss;
-#pragma warning disable CS0618 // Type or member is obsolete
-            itemDef.deprecatedTier = ItemTier.Boss;
-#pragma warning restore CS0618 // Type or member is obsolete*/
-
             itemDef._itemTierDef = PrimordialItemTier.PrimordialTier;
+#pragma warning disable CS0618 // Type or member is obsolete
+            itemDef.deprecatedTier = ItemTier.AssignedAtRuntime;
+#pragma warning restore CS0618 // Type or member is obsolete*/
 
             itemDef.canRemove = false;
             itemDef.hidden = false;
@@ -54,6 +53,9 @@ namespace PrimordialItemsPlugin.Items
             itemDef.pickupIconSprite = LegacyResourcesAPI.LoadAsync<Sprite>("Textures/ItemIcons/texDominoIcon").WaitForCompletion();
             //"RoR2/Base/Mystery/PickupMystery.prefab"
             itemDef.pickupModelPrefab = LegacyResourcesAPI.LoadAsync<GameObject>("Prefabs/PickupModels/PickupDomino").WaitForCompletion();
+
+            itemDef.hideFlags = HideFlags.None;
+            //itemDef.
 
             return itemDef;
         }
@@ -138,8 +140,6 @@ namespace PrimordialItemsPlugin.Items
         {
         }
 
-        private float stopwatch = 0;
-
         private void FixedUpdate()
         {
             float delta = Time.fixedDeltaTime;
@@ -150,20 +150,6 @@ namespace PrimordialItemsPlugin.Items
                 float slugCoeff = slugInitial + (stack * slugStacking);
                 float toHeal = delta * base.body.healthComponent.fullHealth * slugCoeff;
                 base.body.healthComponent.Heal(toHeal, default(ProcChainMask), false);
-            }
-
-            if (!base.body.HasBuff(PrimordialBuffCatalog.HealingEulogyRegen))
-            {
-                stopwatch = 0;
-                return;
-            }
-
-            stopwatch += delta;
-
-            if (stopwatch >= healingInterval)
-            {
-                stopwatch -= healingInterval;
-                base.body.RemoveOldestTimedBuff(PrimordialBuffCatalog.HealingEulogyRegen);
             }
         }
 
@@ -205,7 +191,7 @@ namespace PrimordialItemsPlugin.Items
                 int most = Mathf.CeilToInt(regenDuration * (1.0f / healingInterval));
                 for (int i = 0; i < most; i++)
                 {
-                    body.AddTimedBuff(regen, regenDuration, most);
+                    body.AddTimedBuff(regen, healingInterval * (i + 1), most);
                 }
             }
         }

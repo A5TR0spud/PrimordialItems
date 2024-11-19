@@ -24,7 +24,7 @@ namespace PrimordialItemsPlugin.Buffs
             buff.iconSprite = PrimPlugin.primordialAssetBundle.LoadAsset<Sprite>("texHealingEulogyRegen");
 
             buff.buffColor = new Color(0.78431374f, 0.9372549f, 0.42745098f, 1f);
-            buff.name = "primordialHealingEulogyRegen";
+            buff.name = "primordialHealingEulogyMending";
 
             return buff;
         }

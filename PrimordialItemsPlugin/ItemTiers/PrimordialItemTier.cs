@@ -25,20 +25,22 @@ namespace PrimordialItemsPlugin.ItemTiers
             primordialDarkColorIndex = ColorsAPI.RegisterColor(darkColor);
 
             PrimordialTier = ScriptableObject.CreateInstance<ItemTierDef>();
-            PrimordialTier.canScrap = false;
-            PrimordialTier.isDroppable = false;
+            PrimordialTier.canScrap = false; //scrappers
+            //PrimordialTier.isDroppable = false; //?????
+            PrimordialTier.canRestack = false; //shrine of order?
             
             PrimordialTier.colorIndex = primordialColorIndex;
             PrimordialTier.darkColorIndex = primordialDarkColorIndex;
 
             PrimordialTier.pickupRules = ItemTierDef.PickupRules.ConfirmFirst;
-            PrimordialTier.canRestack = false;
+            PrimordialTier.tier = ItemTier.AssignedAtRuntime;
             PrimordialTier._tier = ItemTier.AssignedAtRuntime;
             PrimordialTier.name = "Primordial";
+            PrimordialTier.bgIconTexture = PrimPlugin.primordialAssetBundle.LoadAsset<Sprite>("texPrimordialBGIcon").texture;
+            PrimordialTier.hideFlags = HideFlags.None;
 
             ContentAddition.AddItemTierDef(PrimordialTier);
 
-            PrimordialTier.bgIconTexture = PrimPlugin.primordialAssetBundle.LoadAsset<Sprite>("texPrimordialBGIcon").texture;
 
             //var highlightPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/UI/HighlightTier3Item.prefab").WaitForCompletion();
             var dropletPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Common/EquipmentOrb.prefab").WaitForCompletion();

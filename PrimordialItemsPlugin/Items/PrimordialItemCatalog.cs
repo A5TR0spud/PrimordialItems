@@ -3,6 +3,7 @@ using PrimordialItemsPlugin.ItemTiers;
 using R2API;
 using RoR2;
 using RoR2.Items;
+using RoR2.UI.LogBook;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,7 +22,9 @@ namespace PrimordialItemsPlugin.Items
             PrimordialItemTier.init();
 
             HealingEulogy = HealingEulogyBehavior.init();
-            ContentAddition.AddItemDef(HealingEulogy);
+            //ContentAddition.AddItemDef(HealingEulogy);
+            HealingEulogyItem = new CustomItem(HealingEulogy, (ItemDisplayRule[])null);
+            ItemAPI.Add(HealingEulogyItem);
             HealingEulogyBehavior.hook();
 
             hook();
@@ -29,13 +32,12 @@ namespace PrimordialItemsPlugin.Items
         
         public static void hook()
         {
-            //Item Displays
-            On.RoR2.ItemCatalog.Init += (orig) =>
+            //Item Displays and Adding Content
+            /*On.RoR2.ItemCatalog.Init += (orig) =>
             {
-                HealingEulogyItem = new CustomItem(HealingEulogy, (ItemDisplayRule[])null);
-                ItemAPI.Add(HealingEulogyItem);
+                
                 orig();
-            };
+            };*/
 
             //Transformations
             On.RoR2.ItemCatalog.GetItemPairsForRelationship += (orig, relationshipType) =>
@@ -59,6 +61,8 @@ namespace PrimordialItemsPlugin.Items
                 
                 return toReturn;
             };
+
+            
         }
     }
 }
